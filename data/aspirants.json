@@ -1,0 +1,94 @@
+[
+  
+  {
+    "id": 2004,
+    "name": "Collins Bolton Duodu",
+    "pin": "pin2004",
+      "position": "Organizer",
+    "image": "assets/image/Collins Bolton Duodu.jpeg"
+  },
+  {
+    "id": 2005,
+    "name": "Deloris Awalime",
+    "pin": "pin2005",
+      "position": "TREASURER",
+    "image": "assets/image/Deloris Awalime.jpeg"
+  },
+  {
+    "id": 2006,
+    "name": "Dr Ben O. Ankrah",
+    "pin": "pin2006",
+      "position": "President",
+    "image": "assets/image/Dr Ben O. Ankrah.jpeg"
+  },
+  {
+    "id": 2007,
+    "name": "Ebenezer Quarku",
+    "pin": "pin2007",
+      "position": "Male Executive Member",
+    "image": "assets/image/Ebenezer Quarku.jpeg"
+  },
+  {
+    "id": 2008,
+    "name": "Eric Ellis Hope",
+    "pin": "pin2008",
+      "position": "Organizer",
+    "image": "assets/image/Eric Ellis Hope.jpeg"
+  },
+  {
+    "id": 2009,
+    "name": "Eric Yamoah",
+    "pin": "pin2009",
+      "position": "Secretary",
+    "image": "assets/image/Eric Yamoah.jpeg"
+  },
+  {
+    "id": 2010,
+    "name": "Francis Boakye",
+    "pin": "pin2010",
+      "position": "Vice President",
+    "image": "assets/image/Francis Boakye.jpeg"
+  },
+  {
+    "id": 2011,
+    "name": "Frederick Asare Donkor",
+    "pin": "pin2011",
+      "position": "Male Executive Member",
+    "image": "assets/image/Frederick Asare Donkor.jpeg"
+  },
+  {
+    "id": 2012,
+    "name": "Helen Kwofie",
+    "pin": "pin2012",
+    "position": "Female Executive Member",
+    "image": "assets/image/Helen Kwofie.jpeg"
+  },
+  {
+    "id": 2013,
+    "name": "John Ato Ampiah",
+    "pin": "pin2013",
+      "position": "Secretary",
+    "image": "assets/image/John Ato Ampiah.jpeg"
+  },
+  {
+    "id": 2014,
+    "name": "Joyce Osei Ampaw",
+    "pin": "pin2014",
+    "position": " Female Executive Member ",
+    "image": "assets/image/Joyce Osei Ampaw.jpeg"
+  },
+  {
+    "id": 2015,
+    "name": "Samuel Dodoo Esq",
+    "pin": "pin2015",
+      "position": " Male Executive Member",
+    "image": "assets/image/Samuel Dodoo Esq.jpeg"
+  },
+   {
+    "id": 2016,
+    "name": "Ogyadu O. Larbi",
+    "pin": "pin2016",
+      "position": "Vice President",
+    "image": "assets/image/Ogyadu O. Larbi.png"
+  }
+]
