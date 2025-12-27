@@ -3,10 +3,10 @@
 ## 📍 Important URLs
 
 ```
-Home Page:       http://localhost/E-VOTE/
-Installation:    http://localhost/E-VOTE/install.php
-Setup Guide:     http://localhost/E-VOTE/setup.php
-Getting Started: http://localhost/E-VOTE/getting-started.html
+Home Page:       https://your-domain.com/
+Installation:    https://your-domain.com/install.php
+Setup Guide:     https://your-domain.com/setup.php
+Getting Started: https://your-domain.com/getting-started.html
 ```
 
 ## 🔑 Default Login Credentials
@@ -83,7 +83,7 @@ Getting Started: http://localhost/E-VOTE/getting-started.html
 
 **Default Connection**:
 ```
-Host: localhost
+Host: your hosting domain
 Username: root
 Password: (empty)
 ```
@@ -105,7 +105,7 @@ $db_name = 'evoting_system';
 
 ```php
 define('SITE_TITLE', 'E-Voting System');
-define('SITE_URL', 'http://localhost/E-VOTE');
+define('SITE_URL', '');
 define('VOTING_ACTIVE', true);
 ```
 

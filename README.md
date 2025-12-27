@@ -14,7 +14,7 @@ A complete web-based voting system built with PHP, Bootstrap, HTML, CSS, and Jav
 
 ## System Requirements
 
-- **Server**: Apache (via XAMPP)
+- **Server**: Apache or Nginx (shared hosting-friendly)
 - **PHP**: Version 7.4 or higher
 - **Data Store**: JSON files in `data/`
 - **Browser**: Modern browser with JavaScript enabled
@@ -22,7 +22,7 @@ A complete web-based voting system built with PHP, Bootstrap, HTML, CSS, and Jav
 ## Installation
 
 ### Step 1: Extract Files
-Place the `E-VOTE` folder in your `C:\xampp\htdocs\` directory.
+Upload the `E-VOTE` folder to your hosting root (e.g., `public_html/` on Hostinger).
 
 ### Step 2: Verify JSON Data
 - Ensure the `data/` folder contains:
@@ -33,8 +33,8 @@ Place the `E-VOTE` folder in your `C:\xampp\htdocs\` directory.
 	- `votes.json` — Will be created automatically when voting starts
 
 ### Step 3: Start Application
-- Ensure Apache is running in XAMPP (MySQL not required)
-- Navigate to: `http://localhost/E-VOTE`
+- Ensure your hosting web server is running (MySQL not required)
+- Navigate to your domain (e.g., `https://your-domain.com/`)
 
 ## Default Login Credentials
 

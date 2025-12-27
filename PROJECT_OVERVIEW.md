@@ -7,7 +7,7 @@ A complete, production-ready e-voting system with the following components:
 ### 📁 Project Structure
 
 ```
-C:\xampp\htdocs\E-VOTE\
+Upload to your hosting root (e.g., public_html on Hostinger)
 │
 ├── 📄 Core Files
 │   ├── index.php              (Home page)
@@ -160,16 +160,15 @@ C:\xampp\htdocs\E-VOTE\
 ## 🚀 Getting Started
 
 ### Prerequisites
-1. XAMPP installed and running
-2. Apache and MySQL services active
+1. Hosting with Apache/Nginx/PHP running
+2. MySQL not required for this JSON build
 3. PHP 7.4 or higher
 
 ### Setup Steps
-1. Extract project to `C:\xampp\htdocs\E-VOTE\`
-2. Visit `http://localhost/E-VOTE/install.php`
-3. Follow the installation wizard
-4. Import database using phpMyAdmin or the setup script
-5. Access system at `http://localhost/E-VOTE\`
+1. Upload project to your hosting root (e.g., `public_html/`)
+2. Visit `https://your-domain.com/install.php`
+3. Follow the setup steps (JSON, no database needed)
+4. Access the system at `https://your-domain.com/`
 
 ### Quick Database Setup
 ```bash

@@ -56,8 +56,8 @@
                 <h5>Welcome! Let's set up your E-Voting System (JSON)</h5>
 
                 <div class="step">
-                    <h6 class="text-primary">Step 1: Verify XAMPP is Running</h6>
-                    <p>Make sure <strong>Apache</strong> is running in XAMPP Control Panel. MySQL is not required.</p>
+                    <h6 class="text-primary">Step 1: Verify Hosting is Running</h6>
+                    <p>Ensure your hosting web server (Apache/Nginx) is active. MySQL is not required.</p>
                 </div>
 
                 <div class="step">
@@ -85,9 +85,10 @@
                     <h6 class="text-primary">Step 4: Access the System</h6>
                     <p>Once setup is complete, you can access:</p>
                     <ul>
-                        <li><strong>Home:</strong> http://localhost/E-VOTE</li>
-                        <li><strong>Admin Login:</strong> Name: <code>Admin User</code>, PIN: <code>admin123</code></li>
-                        <li><strong>Voter Login:</strong> Name + PIN from <code>data/voters.json</code></li>
+                        <li><strong>Home:</strong> https://your-domain.com/</li>
+                        <li><strong>Login:</strong> https://your-domain.com/login.php</li>
+                        <li><strong>Admin:</strong> https://your-domain.com/admin/dashboard.php</li>
+                        <li><strong>Voter:</strong> https://your-domain.com/voter/dashboard.php</li>
                     </ul>
                 </div>
 

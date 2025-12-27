@@ -1,7 +1,8 @@
 <?php
 // Configuration File
 define('SITE_TITLE', 'E-Voting System');
-define('SITE_URL', 'http://localhost/E-VOTE');
+// Leave empty to use relative paths on any host (e.g., Hostinger)
+define('SITE_URL', '');
 define('UPLOAD_PATH', 'assets/uploads/');
 define('MAX_FILE_SIZE', 5242880); // 5MB
 

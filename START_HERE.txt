@@ -90,12 +90,6 @@ STEP 3: Login & Start Using
                           IMPORTANT URLS
 ═══════════════════════════════════════════════════════════════════════════════
 
-Home Page:          http://localhost/E-VOTE/
-Installation:       http://localhost/E-VOTE/install.php
-Setup Guide:        http://localhost/E-VOTE/setup.php
-Getting Started:    http://localhost/E-VOTE/getting-started.html
-Admin Dashboard:    http://localhost/E-VOTE/admin/dashboard.php
-Voter Dashboard:    http://localhost/E-VOTE/voter/dashboard.php
 
 ═══════════════════════════════════════════════════════════════════════════════
                         PROJECT FILE STRUCTURE
@@ -158,10 +152,6 @@ Tables Created:
 ✓ votes          - Vote records (anonymous)
 
 Default Connection:
-- Host: localhost
-- Username: root
-- Password: (empty)
-- Port: 3306
 
 ═══════════════════════════════════════════════════════════════════════════════
                           DEFAULT CREDENTIALS
