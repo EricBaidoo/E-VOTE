@@ -56,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$already_voted) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cast Your Vote - <?php echo SITE_TITLE; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="bg-light">
@@ -175,7 +176,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$already_voted) {
                                 <?php endforeach; ?>
 
                                 <div class="form-check mb-4 p-3 border border-danger rounded">
-                                    <input class="form-check-input" type="checkbox" id="confirmVote" required>
                                     <label class="form-check-label" for="confirmVote">
                                         I confirm that I have selected my choices correctly and this is my final vote.
                                     </label>

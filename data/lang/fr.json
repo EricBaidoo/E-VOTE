@@ -1,0 +1,48 @@
+{
+  "site.title": "Système de Vote",
+  "nav.admin": "Admin",
+  "nav.voter": "Électeur",
+  "nav.dashboard": "Tableau de Bord",
+  "nav.positions": "Postes",
+  "nav.candidates": "Candidats",
+  "nav.voters": "Électeurs",
+  "nav.results": "Résultats",
+  "nav.profile": "Profil",
+  "nav.logout": "Déconnexion",
+  "nav.language": "Langue",
+
+  "login.title": "Connexion",
+  "login.name": "Nom",
+  "login.pin": "Code PIN",
+  "login.submit": "Se Connecter",
+  "login.error.admin": "Identifiants admin invalides. Utilisez le nom et le PIN.",
+  "login.error.voter": "Identifiants électeur invalides. Utilisez votre nom et PIN.",
+
+  "admin.dashboard.title": "Tableau de Bord Admin",
+  "admin.stats.total_voters": "Total des Électeurs Inscrits",
+  "admin.stats.total_votes": "Total des Votes",
+  "admin.stats.total_positions": "Total des Postes",
+  "admin.stats.total_candidates": "Total des Candidats",
+  "admin.turnout": "Participation des Électeurs",
+  "admin.quick.manage_positions": "Gérer les Postes",
+  "admin.quick.manage_candidates": "Gérer les Candidats",
+  "admin.quick.manage_voters": "Gérer les Électeurs",
+  "admin.quick.view_results": "Voir les Résultats",
+
+  "voter.dashboard.title": "Tableau de Bord Électeur",
+  "voter.name": "Nom",
+  "voter.id": "ID Électeur",
+  "voter.status": "Statut du Vote",
+  "voter.status.voted": "A Voté",
+  "voter.status.pending": "En Attente",
+
+  "vote.title": "Votez",
+  "vote.instructions": "Sélectionnez les candidats par catégorie. Sélections exactes requises par siège.",
+  "vote.seats": "Sièges",
+  "vote.confirm": "Je confirme mes choix et que c'est mon vote final.",
+  "vote.submit": "Valider le Vote",
+  "vote.cancel": "Annuler",
+  "vote.back_to_dashboard": "Retour au Tableau de Bord",
+
+  "results.title": "Résultats de l'Élection"
+}

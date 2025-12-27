@@ -1,0 +1,48 @@
+{
+  "site.title": "Sistema de Votación",
+  "nav.admin": "Admin",
+  "nav.voter": "Votante",
+  "nav.dashboard": "Panel",
+  "nav.positions": "Puestos",
+  "nav.candidates": "Candidatos",
+  "nav.voters": "Votantes",
+  "nav.results": "Resultados",
+  "nav.profile": "Perfil",
+  "nav.logout": "Salir",
+  "nav.language": "Idioma",
+
+  "login.title": "Inicio de Sesión",
+  "login.name": "Nombre",
+  "login.pin": "PIN",
+  "login.submit": "Entrar",
+  "login.error.admin": "Credenciales de admin inválidas. Use Nombre y PIN.",
+  "login.error.voter": "Credenciales de votante inválidas. Use su Nombre y PIN.",
+
+  "admin.dashboard.title": "Panel de Admin",
+  "admin.stats.total_voters": "Total de Votantes Registrados",
+  "admin.stats.total_votes": "Total de Votos",
+  "admin.stats.total_positions": "Total de Puestos",
+  "admin.stats.total_candidates": "Total de Candidatos",
+  "admin.turnout": "Participación de Votantes",
+  "admin.quick.manage_positions": "Gestionar Puestos",
+  "admin.quick.manage_candidates": "Gestionar Candidatos",
+  "admin.quick.manage_voters": "Gestionar Votantes",
+  "admin.quick.view_results": "Ver Resultados",
+
+  "voter.dashboard.title": "Panel del Votante",
+  "voter.name": "Nombre",
+  "voter.id": "ID de Votante",
+  "voter.status": "Estado del Voto",
+  "voter.status.voted": "Votado",
+  "voter.status.pending": "Pendiente",
+
+  "vote.title": "Emita su Voto",
+  "vote.instructions": "Seleccione candidatos por categoría. Se requieren selecciones exactas por asiento.",
+  "vote.seats": "Asientos",
+  "vote.confirm": "Confirmo mis selecciones y este es mi voto final.",
+  "vote.submit": "Enviar Voto",
+  "vote.cancel": "Cancelar",
+  "vote.back_to_dashboard": "Volver al Panel",
+
+  "results.title": "Resultados de la Elección"
+}

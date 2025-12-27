@@ -1,0 +1,48 @@
+{
+  "site.title": "نظام التصويت",
+  "nav.admin": "مسؤول",
+  "nav.voter": "ناخب",
+  "nav.dashboard": "لوحة التحكم",
+  "nav.positions": "المناصب",
+  "nav.candidates": "المرشحون",
+  "nav.voters": "الناخبون",
+  "nav.results": "النتائج",
+  "nav.profile": "الملف الشخصي",
+  "nav.logout": "تسجيل الخروج",
+  "nav.language": "اللغة",
+
+  "login.title": "تسجيل الدخول",
+  "login.name": "الاسم",
+  "login.pin": "الرمز السري",
+  "login.submit": "دخول",
+  "login.error.admin": "بيانات المسؤول غير صحيحة. استخدم الاسم والرمز السري.",
+  "login.error.voter": "بيانات الناخب غير صحيحة. استخدم الاسم والرمز السري.",
+
+  "admin.dashboard.title": "لوحة تحكم المسؤول",
+  "admin.stats.total_voters": "إجمالي الناخبين المسجلين",
+  "admin.stats.total_votes": "إجمالي الأصوات",
+  "admin.stats.total_positions": "إجمالي المناصب",
+  "admin.stats.total_candidates": "إجمالي المرشحين",
+  "admin.turnout": "مشاركة الناخبين",
+  "admin.quick.manage_positions": "إدارة المناصب",
+  "admin.quick.manage_candidates": "إدارة المرشحين",
+  "admin.quick.manage_voters": "إدارة الناخبين",
+  "admin.quick.view_results": "عرض النتائج",
+
+  "voter.dashboard.title": "لوحة تحكم الناخب",
+  "voter.name": "الاسم",
+  "voter.id": "رقم الناخب",
+  "voter.status": "حالة التصويت",
+  "voter.status.voted": "تم التصويت",
+  "voter.status.pending": "قيد الانتظار",
+
+  "vote.title": "أدلِ بصوتك",
+  "vote.instructions": "اختر المرشحين لكل فئة. مطلوب عدد محدد لكل مقعد.",
+  "vote.seats": "المقاعد",
+  "vote.confirm": "أؤكد اختياراتي وهذا هو تصويتي النهائي.",
+  "vote.submit": "إرسال التصويت",
+  "vote.cancel": "إلغاء",
+  "vote.back_to_dashboard": "العودة إلى لوحة التحكم",
+
+  "results.title": "نتائج الانتخابات"
+}

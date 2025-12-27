@@ -1,0 +1,48 @@
+{
+  "site.title": "E-Voting System",
+  "nav.admin": "Admin",
+  "nav.voter": "Voter",
+  "nav.dashboard": "Dashboard",
+  "nav.positions": "Positions",
+  "nav.candidates": "Candidates",
+  "nav.voters": "Voters",
+  "nav.results": "Results",
+  "nav.profile": "Profile",
+  "nav.logout": "Logout",
+  "nav.language": "Language",
+
+  "login.title": "Login",
+  "login.name": "Name",
+  "login.pin": "PIN",
+  "login.submit": "Login",
+  "login.error.admin": "Invalid admin credentials. Use Admin Name and PIN.",
+  "login.error.voter": "Invalid voter credentials. Use your Name and PIN.",
+
+  "admin.dashboard.title": "Admin Dashboard",
+  "admin.stats.total_voters": "Total Registered Voters",
+  "admin.stats.total_votes": "Total Votes Cast",
+  "admin.stats.total_positions": "Total Positions",
+  "admin.stats.total_candidates": "Total Candidates",
+  "admin.turnout": "Voter Participation",
+  "admin.quick.manage_positions": "Manage Positions",
+  "admin.quick.manage_candidates": "Manage Candidates",
+  "admin.quick.manage_voters": "Manage Voters",
+  "admin.quick.view_results": "View Results",
+
+  "voter.dashboard.title": "Voter Dashboard",
+  "voter.name": "Name",
+  "voter.id": "Voter ID",
+  "voter.status": "Voting Status",
+  "voter.status.voted": "Voted",
+  "voter.status.pending": "Pending",
+
+  "vote.title": "Cast Your Vote",
+  "vote.instructions": "Select candidates per category. Exact selections required per seat count.",
+  "vote.seats": "Seats",
+  "vote.confirm": "I confirm that I have selected my choices correctly and this is my final vote.",
+  "vote.submit": "Submit Vote",
+  "vote.cancel": "Cancel",
+  "vote.back_to_dashboard": "Back to Dashboard",
+
+  "results.title": "Election Results"
+}
