@@ -20,7 +20,7 @@ if ($already_voted) {
 $positions_config = get_positions_config();
 $aspirants_by_pos = group_aspirants_by_position();
 $positions = array_keys($aspirants_by_pos);
-sort($positions);
+// Don't sort - group_aspirants_by_position already returns sorted positions
 
 // Handle vote submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$already_voted) {
@@ -56,7 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$already_voted) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cast Your Vote - <?php echo SITE_TITLE; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="bg-light">
@@ -95,27 +96,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$already_voted) {
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="container mt-4 mb-5">
         <div class="row">
-            <div class="col-lg-9 mx-auto">
+            <div class="col-lg-10 mx-auto">
                 <?php if (isset($error)): ?>
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fas fa-exclamation-circle"></i> <?php echo $error; ?>
+                        <i class="fas fa-exclamation-circle me-2"></i><?php echo $error; ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                     <?php if ($already_voted): ?>
-                        <a href="dashboard.php" class="btn btn-primary">Back to Dashboard</a>
+                        <a href="dashboard.php" class="btn btn-primary"><i class="fas fa-arrow-left me-2"></i>Back to Dashboard</a>
                     <?php endif; ?>
                 <?php else: ?>
-                    <div class="page-header mb-4">
-                        <div class="container">
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <h4 class="mb-1"><i class="fas fa-vote-yea"></i> Cast Your Vote</h4>
-                                    <p class="mb-0">Select candidates per category. Exact selections required per seat count.</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="mb-4">
+                        <h2 class="mb-1"><i class="fas fa-vote-yea me-2"></i>Cast Your Vote</h2>
+                        <p class="text-muted">Select candidates per category. Exact selections required per seat count.</p>
                     </div>
                     <div class="card card-elevated mb-4">
                         <div class="card-body">
@@ -123,11 +118,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$already_voted) {
                             <form method="POST" id="voteForm">
                                 <?php foreach ($positions as $position): ?>
                                     <?php $candidates = $aspirants_by_pos[$position] ?? []; $maxSel = isset($positions_config[$position]) ? (int)$positions_config[$position] : 1; ?>
-                                    <div class="card mb-4 border-left-primary">
+                                    <div class="card mb-4 border-left-primary shadow">
                                         <div class="card-header bg-light">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="mb-0"><?php echo $position; ?></h6>
-                                                <span class="badge bg-primary">Seats: <?php echo $maxSel; ?></span>
+                                                <h5 class="mb-0"><?php echo $position; ?></h5>
+                                                <span class="badge bg-primary px-3 py-2"><i class="fas fa-chair me-1"></i>Seats: <?php echo $maxSel; ?></span>
                                             </div>
                                         </div>
                                         <div class="card-body">
@@ -175,21 +170,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$already_voted) {
                                     </div>
                                 <?php endforeach; ?>
 
-                                <div class="form-check mb-4 p-3 border border-danger rounded">
-                                    <label class="form-check-label" for="confirmVote">
+                                <div class="form-check mb-4 p-4 border border-2 border-primary rounded-3 bg-light">
+                                    <input class="form-check-input" type="checkbox" id="confirmVote" required>
+                                    <label class="form-check-label fw-semibold" for="confirmVote">
+                                        <i class="fas fa-check-circle me-2 text-primary"></i>
                                         I confirm that I have selected my choices correctly and this is my final vote.
                                     </label>
                                 </div>
 
-                                <div class="row">
+                                <div class="row g-3">
                                     <div class="col-md-6">
                                         <button type="submit" class="btn btn-success btn-lg w-100">
-                                            <i class="fas fa-check-circle"></i> Submit Vote
+                                            <i class="fas fa-check-circle me-2"></i>Submit Vote
                                         </button>
                                     </div>
                                     <div class="col-md-6">
                                         <a href="dashboard.php" class="btn btn-secondary btn-lg w-100">
-                                            <i class="fas fa-times-circle"></i> Cancel
+                                            <i class="fas fa-times-circle me-2"></i>Cancel
                                         </a>
                                     </div>
                                 </div>
@@ -206,7 +203,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$already_voted) {
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <script src="../js/voting.js"></script>
 </body>
 </html>

@@ -35,6 +35,8 @@ $cfg = get_positions_config();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Positions - <?php echo SITE_TITLE; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="bg-light">
@@ -79,14 +81,12 @@ $cfg = get_positions_config();
         </div>
     </nav>
 
-    <div class="container-fluid mt-4">
+    <div class="container-fluid mt-4 mb-5">
         <div class="row">
-            <div class="col-lg-10 mx-auto">
-                <div class="page-header mb-4">
-                    <div class="container">
-                        <h4 class="mb-0"><i class="fas fa-chair"></i> Manage Positions</h4>
-                        <small class="text-white-50">Set seat counts per category</small>
-                    </div>
+            <div class="col-lg-11 mx-auto">
+                <div class="mb-4">
+                    <h2 class="mb-1"><i class="fas fa-list-check me-2"></i>Manage Positions</h2>
+                    <p class="text-muted">Set seat counts per category</p>
                 </div>
 
                 <?php if ($message): ?>
@@ -103,24 +103,27 @@ $cfg = get_positions_config();
                     </div>
                 <?php endif; ?>
 
-                <div class="row">
-                    <div class="col-md-4 mb-4">
-                        <div class="card shadow-lg">
-                            <div class="card-header bg-primary text-white">
-                                <h6 class="mb-0">Add New Position</h6>
-                            </div>
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="card border-left-info shadow">
                             <div class="card-body">
-                                <div class="alert alert-info">
-                                    Positions are derived from aspirants in data/aspirants.json. Use the table on the right to set seat counts per position.
+                                <div class="mb-3">
+                                    <div class="text-info" style="font-size: 2rem;">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                </div>
+                                <h5 class="mb-3">Position Information</h5>
+                                <div class="alert alert-info mb-0">
+                                    <p class="mb-0"><i class="fas fa-database me-2"></i>Positions are derived from aspirants in <code>data/aspirants.json</code>. Use the table to set seat counts per position.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-8">
+                    <div class="col-lg-8">
                         <div class="card card-elevated">
                             <div class="card-header bg-primary text-white">
-                                <h6 class="mb-0">Positions & Seat Counts</h6>
+                                <h5 class="mb-0"><i class="fas fa-chair me-2"></i>Positions & Seat Counts</h5>
                             </div>
                             <div class="card-body">
                                 <?php if (count($positions) > 0): ?>
@@ -145,7 +148,7 @@ $cfg = get_positions_config();
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Seat Counts</button>
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i>Save Seat Counts</button>
                                     </form>
                                 <?php else: ?>
                                     <div class="alert alert-info">
@@ -165,6 +168,5 @@ $cfg = get_positions_config();
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,4 +1,11 @@
 [
+   {
+    "id": 20017,
+    "name": "ISAAC COLEMAN",
+    "pin": "pin20017",
+      "position": "President",
+    "image": "assets/image/ISAAC COLEMAN.jpg"
+  },
   
   {
     "id": 2004,
@@ -11,7 +18,7 @@
     "id": 2005,
     "name": "Deloris Awalime",
     "pin": "pin2005",
-      "position": "TREASURER",
+    "position": "Treasurer",
     "image": "assets/image/Deloris Awalime.jpeg"
   },
   {
@@ -74,14 +81,14 @@
     "id": 2014,
     "name": "Joyce Osei Ampaw",
     "pin": "pin2014",
-    "position": " Female Executive Member ",
+    "position": "Female Executive Member",
     "image": "assets/image/Joyce Osei Ampaw.jpeg"
   },
   {
     "id": 2015,
     "name": "Samuel Dodoo Esq",
     "pin": "pin2015",
-      "position": " Male Executive Member",
+    "position": "Male Executive Member",
     "image": "assets/image/Samuel Dodoo Esq.jpeg"
   },
    {

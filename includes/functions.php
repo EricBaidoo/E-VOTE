@@ -26,12 +26,16 @@ function is_voter() {
 // Redirect to login if not authenticated
 function require_login($role = null) {
     if (!is_logged_in()) {
-        header('Location: ' . SITE_URL . '/login.php');
+        $base = rtrim(SITE_URL, '/');
+        $target = $base ? $base . '/login.php' : 'login.php';
+        header('Location: ' . $target);
         exit;
     }
     
     if ($role && $_SESSION['role'] != $role) {
-        header('Location: ' . SITE_URL . '/unauthorized.php');
+        $base = rtrim(SITE_URL, '/');
+        $target = $base ? $base . '/unauthorized.php' : 'unauthorized.php';
+        header('Location: ' . $target);
         exit;
     }
 }

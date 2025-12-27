@@ -29,9 +29,29 @@ foreach ($asp_by_pos as $pos => $list) {
         ];
     }
 }
-usort($candidates, function($a, $b){
-    $cmp = strcasecmp($a['position_name'], $b['position_name']);
-    return $cmp !== 0 ? $cmp : strcasecmp($a['candidate_name'], $b['candidate_name']);
+
+// Sort candidates by custom position order
+$position_order = [
+    'President' => 1,
+    'Vice' => 2,
+    'Vice President' => 2,
+    'Secretary' => 3,
+    'Treasurer' => 4,
+    'Organizer' => 5,
+    'Male Executive Member' => 6,
+    'Female Executive Member' => 7,
+    'Executive Members' => 8,
+    'Executive Member' => 8,
+    'Executive' => 8
+];
+
+usort($candidates, function($a, $b) use ($position_order) {
+    $aOrder = $position_order[$a['position_name']] ?? 999;
+    $bOrder = $position_order[$b['position_name']] ?? 999;
+    if ($aOrder !== $bOrder) {
+        return $aOrder - $bOrder;
+    }
+    return strcasecmp($a['candidate_name'], $b['candidate_name']);
 });
 ?>
 <!DOCTYPE html>
@@ -41,6 +61,8 @@ usort($candidates, function($a, $b){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Candidates - <?php echo SITE_TITLE; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="bg-light">
@@ -85,14 +107,12 @@ usort($candidates, function($a, $b){
         </div>
     </nav>
 
-    <div class="container-fluid mt-4">
+    <div class="container-fluid mt-4 mb-5">
         <div class="row">
-            <div class="col-lg-10 mx-auto">
-                <div class="page-header mb-4">
-                    <div class="container">
-                        <h4 class="mb-0"><i class="fas fa-user-tie"></i> Manage Candidates</h4>
-                        <small class="text-white-50">Read-only from aspirants.json</small>
-                    </div>
+            <div class="col-lg-11 mx-auto">
+                <div class="mb-4">
+                    <h2 class="mb-1"><i class="fas fa-user-tie me-2"></i>Manage Candidates</h2>
+                    <p class="text-muted">Read-only from aspirants.json</p>
                 </div>
 
                 <?php if ($message): ?>
@@ -109,24 +129,27 @@ usort($candidates, function($a, $b){
                     </div>
                 <?php endif; ?>
 
-                <div class="row">
-                    <div class="col-md-4 mb-4">
-                        <div class="card shadow-lg">
-                            <div class="card-header bg-primary text-white">
-                                <h6 class="mb-0">Candidates Source</h6>
-                            </div>
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="card border-left-info shadow">
                             <div class="card-body">
-                                <div class="alert alert-info">
-                                    This list is read from data/aspirants.json. To update candidates, edit that file (id, name, pin, position, image).
+                                <div class="mb-3">
+                                    <div class="text-info" style="font-size: 2rem;">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                </div>
+                                <h5 class="mb-3">Candidates Source</h5>
+                                <div class="alert alert-info mb-0">
+                                    <p class="mb-0"><i class="fas fa-database me-2"></i>This list is read from <code>data/aspirants.json</code>. To update candidates, edit that file (id, name, pin, position, image).</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-8">
+                    <div class="col-lg-8">
                         <div class="card card-elevated">
                             <div class="card-header bg-primary text-white">
-                                <h6 class="mb-0">All Candidates</h6>
+                                <h5 class="mb-0"><i class="fas fa-users me-2"></i>All Candidates</h5>
                             </div>
                             <div class="card-body">
                                 <?php if (count($candidates) > 0): ?>
@@ -174,6 +197,5 @@ usort($candidates, function($a, $b){
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>

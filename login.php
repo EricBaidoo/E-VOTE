@@ -1,4 +1,15 @@
 <?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+$logDir = __DIR__ . '/logs';
+if (!is_dir($logDir)) {
+    mkdir($logDir, 0777, true);
+}
+ini_set('log_errors', 1);
+ini_set('error_log', $logDir . '/php_errors.log');
+
 require_once 'includes/config.php';
 require_once 'includes/functions.php';
 require_once 'includes/json_utils.php';
@@ -8,11 +19,13 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 if (is_logged_in()) {
+    $base = rtrim(SITE_URL, '/');
     if (is_admin()) {
-        header('Location: ' . SITE_URL . '/admin/dashboard.php');
+        $target = $base ? $base . '/admin/dashboard.php' : 'admin/dashboard.php';
     } else {
-        header('Location: ' . SITE_URL . '/voter/vote.php');
+        $target = $base ? $base . '/voter/vote.php' : 'voter/vote.php';
     }
+    header('Location: ' . $target);
     exit;
 }
 $error = '';
@@ -33,11 +46,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 break;
             }
         }
+        // Fallback: allow default admin even if admins.json is empty or missing the entry
+        if (!$adminMatch && strcasecmp($name, ADMIN_DEFAULT_USERNAME) === 0) {
+            $adminMatch = ['id' => 1, 'name' => ADMIN_DEFAULT_USERNAME, 'pin' => ADMIN_DEFAULT_PASSWORD];
+        }
+
         if ($adminMatch && ($pin === ($adminMatch['pin'] ?? '') || $pin === ADMIN_DEFAULT_PASSWORD)) {
             $_SESSION['user_id'] = 'admin_' . ($adminMatch['id'] ?? 1);
             $_SESSION['username'] = $adminMatch['name'] ?? ADMIN_DEFAULT_USERNAME;
             $_SESSION['role'] = 'admin';
-            header('Location: ' . SITE_URL . '/admin/dashboard.php');
+            $base = rtrim(SITE_URL, '/');
+            $target = $base ? $base . '/admin/dashboard.php' : 'admin/dashboard.php';
+            header('Location: ' . $target);
             exit;
         }
         $error = 'Invalid admin credentials. Use Admin Name and PIN.';
@@ -54,7 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_id'] = (string)$foundVoter['id'];
             $_SESSION['username'] = $foundVoter['name'] ?? 'Voter';
             $_SESSION['role'] = 'voter';
-            header('Location: ' . SITE_URL . '/voter/vote.php');
+            $base = rtrim(SITE_URL, '/');
+            $target = $base ? $base . '/voter/vote.php' : 'voter/vote.php';
+            header('Location: ' . $target);
             exit;
         }
         $error = 'Invalid voter credentials. Use your Name and PIN.';
@@ -66,66 +88,72 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - <?php echo SITE_TITLE; ?></title>
+    <title>Sign In - <?php echo SITE_TITLE; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="index.php">
-                <i class="fas fa-vote-yea"></i> <?php echo SITE_TITLE; ?>
-            </a>
-        </div>
-    </nav>
-
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-4">
-                <div class="card shadow-lg">
-                    <div class="card-body p-5">
-                        <h3 class="card-title text-center mb-4">Login</h3>
-
-                        <form method="POST">
-                            <div class="text-center mb-3">
-                                <div class="btn-group" role="group" aria-label="Role selection">
-                                    <input type="radio" class="btn-check" name="role" id="role_admin" value="admin" autocomplete="off">
-                                    <label class="btn btn-outline-danger" for="role_admin"><i class="fas fa-user-shield"></i> Admin</label>
-                                    <input type="radio" class="btn-check" name="role" id="role_voter" value="voter" autocomplete="off" checked>
-                                    <label class="btn btn-outline-primary" for="role_voter"><i class="fas fa-user"></i> Voter</label>
-                                </div>
-                            </div>
+<body class="auth-bg">
+    <div class="container py-5">
+        <div class="row align-items-center justify-content-center min-vh-100">
+            <div class="col-lg-5 col-xl-4">
+                <div class="text-center mb-4">
+                    <div class="brand-pill d-inline-flex mb-3">
+                        <i class="fas fa-vote-yea"></i>
+                        <span><?php echo SITE_TITLE; ?></span>
+                    </div>
+                    <h1 class="h2 fw-bold mb-2">Welcome back</h1>
+                    <p class="text-muted mb-0">Sign in to continue to your account</p>
+                </div>
+                
+                <div class="card auth-card">
+                    <div class="card-body p-4">
                         <?php if ($error): ?>
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="fas fa-exclamation-circle"></i> <?php echo $error; ?>
+                                <i class="fas fa-exclamation-circle me-2"></i><?php echo $error; ?>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         <?php endif; ?>
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" required>
+
+                        <form method="POST" class="needs-validation" novalidate>
+                            <div class="mb-4">
+                                <label class="form-label text-muted small fw-semibold text-uppercase" style="font-size: 0.75rem; letter-spacing: 0.05em;">Account Type</label>
+                                <div class="btn-group w-100" role="group" aria-label="Role selection">
+                                    <input type="radio" class="btn-check" name="role" id="role_voter" value="voter" autocomplete="off" checked>
+                                    <label class="btn btn-outline-primary" for="role_voter">
+                                        <i class="fas fa-user me-2"></i>Voter
+                                    </label>
+                                    <input type="radio" class="btn-check" name="role" id="role_admin" value="admin" autocomplete="off">
+                                    <label class="btn btn-outline-danger" for="role_admin">
+                                        <i class="fas fa-user-shield me-2"></i>Admin
+                                    </label>
+                                </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="pin" class="form-label">PIN</label>
-                                <input type="password" class="form-control" id="pin" name="pin" required>
+                                <label for="name" class="form-label fw-semibold">Name</label>
+                                <input type="text" class="form-control form-control-lg" id="name" name="name" placeholder="Enter your name" required autofocus>
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-sign-in-alt"></i> Login
+                            <div class="mb-4">
+                                <label for="pin" class="form-label fw-semibold">PIN</label>
+                                <input type="password" class="form-control form-control-lg" id="pin" name="pin" placeholder="Enter your PIN" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-lg w-100 fw-semibold">
+                                <i class="fas fa-sign-in-alt me-2"></i>Sign In
                             </button>
                         </form>
-
-                       
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>
 
+    <footer class="text-center py-4 mt-5">
+        <p class="text-muted small mb-0">&copy; <?php echo date('Y'); ?> <?php echo SITE_TITLE; ?>. All rights reserved.</p>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>

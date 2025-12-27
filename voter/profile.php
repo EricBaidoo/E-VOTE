@@ -30,6 +30,8 @@ foreach ($votes as $vt) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - <?php echo SITE_TITLE; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="bg-light">
@@ -68,52 +70,56 @@ foreach ($votes as $vt) {
         </div>
     </nav>
 
-    <div class="container mt-5">
+    <div class="container mt-5 mb-5">
         <div class="row">
             <div class="col-lg-6 mx-auto">
-                <div class="card shadow-lg mb-4">
+                <div class="card card-elevated">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0"><i class="fas fa-user-circle"></i> My Profile</h5>
+                        <h5 class="mb-0"><i class="fas fa-user-circle me-2"></i>My Profile</h5>
                     </div>
                     <div class="card-body">
-                        <div class="mb-4 text-center">
-                            <div style="font-size: 4rem; color: #007bff;">
+                        <div class="mb-4 text-center py-3">
+                            <div style="font-size: 5rem; color: #4f46e5;">
                                 <i class="fas fa-user-circle"></i>
                             </div>
                         </div>
 
-                        <table class="table">
-                            <tr>
-                                <th>Name:</th>
-                                <td><?php echo $voter['name'] ?? 'Voter'; ?></td>
-                            </tr>
-                            <tr>
-                                <th>Voter ID:</th>
-                                <td><?php echo $voter['id'] ?? '-'; ?></td>
-                            </tr>
-                            <tr>
-                                <th>Voting Status:</th>
-                                <td>
-                                    <?php if ($has_voted_flag): ?>
-                                        <span class="badge bg-success">✓ Voted</span>
-                                    <?php else: ?>
-                                        <span class="badge bg-warning">Pending</span>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                            <?php if ($has_voted_flag && $vote_time): ?>
-                            <tr>
-                                <th>Vote Time:</th>
-                                <td><?php echo format_date($vote_time); ?></td>
-                            </tr>
-                            <?php endif; ?>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <th class="text-muted" width="35%">Name:</th>
+                                    <td><strong><?php echo $voter['name'] ?? 'Voter'; ?></strong></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-muted">Voter ID:</th>
+                                    <td><code class="fs-6"><?php echo $voter['id'] ?? '-'; ?></code></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-muted">Voting Status:</th>
+                                    <td>
+                                        <?php if ($has_voted_flag): ?>
+                                            <span class="badge bg-success px-3 py-2"><i class="fas fa-check-circle me-1"></i>Voted</span>
+                                        <?php else: ?>
+                                            <span class="badge bg-warning px-3 py-2"><i class="fas fa-clock me-1"></i>Pending</span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                                <?php if ($has_voted_flag && $vote_time): ?>
+                                <tr>
+                                    <th class="text-muted">Vote Time:</th>
+                                    <td><?php echo format_date($vote_time); ?></td>
+                                </tr>
+                                <?php endif; ?>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                <a href="dashboard.php" class="btn btn-primary">
-                    <i class="fas fa-arrow-left"></i> Back to Dashboard
-                </a>
+                <div class="mt-4">
+                    <a href="dashboard.php" class="btn btn-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -123,6 +129,5 @@ foreach ($votes as $vt) {
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>

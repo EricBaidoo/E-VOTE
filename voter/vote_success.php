@@ -12,6 +12,8 @@ require_login('voter');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vote Submitted - <?php echo SITE_TITLE; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="bg-light">
@@ -24,31 +26,35 @@ require_login('voter');
         </div>
     </nav>
 
-    <div class="container mt-5">
+    <div class="container mt-5 mb-5">
         <div class="row">
-            <div class="col-lg-6 mx-auto">
-                <div class="card shadow-lg text-center">
+            <div class="col-lg-7 mx-auto">
+                <div class="card card-elevated text-center">
                     <div class="card-body p-5">
-                        <div style="font-size: 4rem; color: #28a745;" class="mb-4">
+                        <div style="font-size: 6rem; color: #16a34a;" class="mb-4">
                             <i class="fas fa-check-circle"></i>
                         </div>
                         
-                        <h2 class="card-title mb-3">Thank You!</h2>
-                        <p class="card-text lead">Your vote has been successfully submitted.</p>
+                        <h1 class="card-title mb-3 fw-bold">Thank You!</h1>
+                        <p class="card-text lead mb-4">Your vote has been successfully submitted.</p>
                         
-                        <div class="alert alert-info mt-4">
-                            <i class="fas fa-lock"></i> 
-                            <strong>Your vote is encrypted and anonymous</strong>
-                            <p class="mb-0">It cannot be traced back to you.</p>
+                        <div class="alert alert-success border-0 mt-4" style="background: linear-gradient(to right, rgba(22, 163, 74, 0.1), rgba(22, 163, 74, 0.05));">
+                            <div class="d-flex align-items-center justify-content-center">
+                                <i class="fas fa-shield-halved fa-2x text-success me-3"></i>
+                                <div class="text-start">
+                                    <h6 class="mb-1 fw-bold text-success">Your vote is encrypted and anonymous</h6>
+                                    <p class="mb-0 text-muted">It cannot be traced back to you.</p>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="mt-5">
-                            <a href="dashboard.php" class="btn btn-primary btn-lg">
-                                <i class="fas fa-home"></i> Go to Dashboard
+                            <a href="dashboard.php" class="btn btn-primary btn-lg px-5 mb-3">
+                                <i class="fas fa-home me-2"></i>Go to Dashboard
                             </a>
-                            <br><br>
-                            <a href="results.php" class="btn btn-info btn-lg">
-                                <i class="fas fa-chart-bar"></i> View Results
+                            <br>
+                            <a href="results.php" class="btn btn-outline-primary btn-lg px-5">
+                                <i class="fas fa-chart-bar me-2"></i>View Results
                             </a>
                         </div>
                     </div>
@@ -62,6 +68,5 @@ require_login('voter');
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>

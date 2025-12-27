@@ -61,7 +61,32 @@ function derive_positions_from_aspirants() {
         }
     }
     $positions = array_keys($set);
-    sort($positions);
+    
+    // Define custom position order
+    $order = [
+        'President' => 1,
+        'Vice' => 2,
+        'Vice President' => 2,
+        'Secretary' => 3,
+        'Treasurer' => 4,
+        'Organizer' => 5,
+        'Male Executive Member' => 6,
+        'Female Executive Member' => 7,
+        'Executive Members' => 8,
+        'Executive Member' => 8,
+        'Executive' => 8
+    ];
+    
+    // Sort positions by defined order, then alphabetically
+    usort($positions, function($a, $b) use ($order) {
+        $aOrder = $order[$a] ?? 999;
+        $bOrder = $order[$b] ?? 999;
+        if ($aOrder != $bOrder) {
+            return $aOrder - $bOrder;
+        }
+        return strcasecmp($a, $b);
+    });
+    
     return $positions;
 }
 
@@ -76,6 +101,31 @@ function group_aspirants_by_position() {
     foreach ($group as &$list) {
         usort($list, function($x, $y){ return strcasecmp($x['name'] ?? '', $y['name'] ?? ''); });
     }
+    
+    // Sort the positions themselves by custom order
+    $order = [
+        'President' => 1,
+        'Vice' => 2,
+        'Vice President' => 2,
+        'Secretary' => 3,
+        'Treasurer' => 4,
+        'Organizer' => 5,
+        'Male Executive Member' => 6,
+        'Female Executive Member' => 7,
+        'Executive Members' => 8,
+        'Executive Member' => 8,
+        'Executive' => 8
+    ];
+    
+    uksort($group, function($a, $b) use ($order) {
+        $aOrder = $order[$a] ?? 999;
+        $bOrder = $order[$b] ?? 999;
+        if ($aOrder != $bOrder) {
+            return $aOrder - $bOrder;
+        }
+        return strcasecmp($a, $b);
+    });
+    
     return $group;
 }
 

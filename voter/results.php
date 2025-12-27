@@ -19,6 +19,8 @@ $asp_by_pos = group_aspirants_by_position();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Election Results - <?php echo SITE_TITLE; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body class="bg-light">
@@ -57,14 +59,12 @@ $asp_by_pos = group_aspirants_by_position();
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="container mt-4 mb-5">
         <div class="row">
             <div class="col-lg-10 mx-auto">
-                <div class="page-header mb-4">
-                    <div class="container">
-                        <h4 class="mb-0"><i class="fas fa-chart-bar"></i> Election Results</h4>
-                        <small class="text-white-50">Live tallies per category</small>
-                    </div>
+                <div class="mb-4">
+                    <h2 class="mb-1"><i class="fas fa-chart-bar me-2"></i>Election Results</h2>
+                    <p class="text-muted">Live tallies per category</p>
                 </div>
 
                 <?php foreach ($asp_by_pos as $position => $candidates): ?>
@@ -136,7 +136,7 @@ $asp_by_pos = group_aspirants_by_position();
                 <div class="row mt-4 mb-5">
                     <div class="col-md-6">
                         <a href="dashboard.php" class="btn btn-primary btn-lg w-100">
-                            <i class="fas fa-arrow-left"></i> Back to Dashboard
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                         </a>
                     </div>
                 </div>
@@ -149,6 +149,5 @@ $asp_by_pos = group_aspirants_by_position();
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>
