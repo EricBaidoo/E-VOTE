@@ -125,15 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </div>
                 
-                <div class="card mt-3 bg-info text-white">
-                    <div class="card-body">
-                        <h6 class="card-title">Example Credentials</h6>
-                        <small>
-                            <strong>Admin:</strong> admin / admin123<br>
-                            <strong>Voter:</strong> Use a Name + PIN from data/voters.json
-                        </small>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
