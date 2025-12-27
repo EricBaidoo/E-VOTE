@@ -117,11 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </button>
                         </form>
 
-                        <hr class="my-4">
-
-                        <p class="text-center mb-0 text-muted">
-                            Select Admin or Voter above. Login uses JSON data (no database).
-                        </p>
+                       
                     </div>
                 </div>
                 
