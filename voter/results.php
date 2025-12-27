@@ -92,21 +92,19 @@ $asp_by_pos = group_aspirants_by_position();
                                 <?php $vote_count = $counts[$cand['id']] ?? 0; $percentage = ($total_position_votes > 0) ? round(($vote_count / $total_position_votes) * 100, 2) : 0; ?>
                                 <div class="mb-4">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div>
-                                            <div class="d-flex align-items-center gap-3 flex-wrap">
-                                                <?php if (!empty($cand['image'])): ?>
-                                                    <img class="candidate-avatar img-fluid" src="../<?php echo $cand['image']; ?>" alt="<?php echo $cand['name']; ?>" />
-                                                <?php endif; ?>
-                                                <div>
-                                                    <h6 class="mb-0"><?php echo $cand['name']; ?></h6>
-                                                    <small class="text-muted">Aspirant</small>
-                                                </div>
-                                            </div>
-                                            <?php if ($index == 0 && $vote_count > 0): ?>
-                                                <span class="badge bg-gold ms-2">
-                                                    <i class="fas fa-crown"></i> Leading
-                                                </span>
+                                        <div class="d-flex align-items-center gap-3 flex-wrap">
+                                            <?php if (!empty($cand['image'])): ?>
+                                                <img class="candidate-avatar img-fluid" src="../<?php echo $cand['image']; ?>" alt="<?php echo $cand['name']; ?>" style="width:80px; height:80px; object-fit:contain; border-radius:0.5rem; background:#f9fafb; padding:4px;" />
                                             <?php endif; ?>
+                                            <div>
+                                                <h6 class="mb-0"><?php echo $cand['name']; ?></h6>
+                                                <small class="text-muted">Aspirant</small>
+                                                <?php if ($index == 0 && $vote_count > 0): ?>
+                                                    <span class="badge bg-gold ms-2">
+                                                        <i class="fas fa-crown"></i> Leading
+                                                    </span>
+                                                <?php endif; ?>
+                                            </div>
                                         </div>
                                         <div class="text-end">
                                             <strong><?php echo $vote_count; ?> votes</strong>

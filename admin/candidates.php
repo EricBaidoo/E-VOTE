@@ -169,7 +169,7 @@ usort($candidates, function($a, $b) use ($position_order) {
                                                         <td><?php echo $candidate['candidate_name']; ?></td>
                                                         <td>
                                                             <?php if (!empty($candidate['image'])): ?>
-                                                                <img class="img-fluid rounded-circle" src="../<?php echo $candidate['image']; ?>" alt="<?php echo $candidate['candidate_name']; ?>" style="max-height:56px"/>
+                                                                <img class="img-fluid" src="../<?php echo $candidate['image']; ?>" alt="<?php echo $candidate['candidate_name']; ?>" style="width:80px; height:80px; object-fit:contain; border-radius:0.5rem; border:2px solid #e5e7eb; background:#f9fafb; padding:4px;"/>
                                                             <?php else: ?>
                                                                 <span class="text-muted">No image</span>
                                                             <?php endif; ?>

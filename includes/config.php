@@ -1,6 +1,6 @@
 <?php
 // Configuration File
-define('SITE_TITLE', 'E-Voting System');
+define('SITE_TITLE', 'AMOSA GLOBAL ELECTION');
 // Leave empty to use relative paths on any host (e.g., Hostinger)
 define('SITE_URL', '');
 define('UPLOAD_PATH', 'assets/uploads/');
