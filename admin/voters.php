@@ -1,34 +1,36 @@
 <?php
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
-require_once '../includes/json_utils.php';
+require_once '../includes/db_connect.php';
 
 require_login('admin');
 
 $admin = $_SESSION['username'];
 
-// Load voters from JSON and build vote status map
-$voters = json_load('voters.json');
-$votes = json_load('votes.json');
-$voteMap = [];
-foreach ($votes as $v) {
-    $uid = $v['voter_session_id'] ?? null;
-    $ts = $v['timestamp'] ?? null;
-    if ($uid) {
-        if (!isset($voteMap[$uid]) || strtotime($ts) > strtotime($voteMap[$uid])) {
-            $voteMap[$uid] = $ts;
-        }
-    }
-}
+// Get total voters from database
+$result = $conn->query("SELECT COUNT(*) as total FROM voters");
+$total_voters = $result->fetch_assoc()['total'];
 
-$total_voters = is_array($voters) ? count($voters) : 0;
-$voted_count = 0;
-if (is_array($voters)) {
-    foreach ($voters as $v) {
-        if (isset($voteMap[(string)($v['id'] ?? '')])) { $voted_count++; }
-    }
-}
+// Get voted count from votes table
+$result = $conn->query("SELECT COUNT(DISTINCT voter_session_id) as voted FROM votes");
+$voted_count = $result->fetch_assoc()['voted'];
+
 $pending_count = max(0, $total_voters - $voted_count);
+
+// Get all voters with their vote status
+$query = "
+    SELECT 
+        v.id,
+        v.name,
+        v.email,
+        v.phone,
+        MAX(vt.timestamp) as vote_time
+    FROM voters v
+    LEFT JOIN votes vt ON CAST(v.id AS CHAR) = vt.voter_session_id
+    GROUP BY v.id, v.name, v.email, v.phone
+    ORDER BY v.name ASC
+";
+$votersResult = $conn->query($query);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -142,50 +144,63 @@ $pending_count = max(0, $total_voters - $voted_count);
 
                 <div class="card card-elevated">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0"><i class="fas fa-list me-2"></i>Voters List</h5>
+                        <h5 class="mb-0"><i class="fas fa-list me-2"></i>Voters List (<?php echo $total_voters; ?> Total)</h5>
                     </div>
                     <div class="card-body">
-                        <?php if (is_array($voters) && count($voters) > 0): ?>
+                        <?php if ($votersResult && $votersResult->num_rows > 0): ?>
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead class="table-light">
                                         <tr>
+                                            <th>ID</th>
                                             <th>Name</th>
-                                            <th>Voter ID</th>
-                                            <th>Contact</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
                                             <th>Status</th>
                                             <th>Vote Time</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($voters as $voter): ?>
+                                        <?php while ($voter = $votersResult->fetch_assoc()): ?>
                                             <tr>
-                                                <td><strong><?php echo $voter['name'] ?? 'Voter'; ?></strong></td>
-                                                <td><code><?php echo $voter['id'] ?? 'N/A'; ?></code></td>
+                                                <td><code><?php echo $voter['id']; ?></code></td>
+                                                <td><strong><?php echo htmlspecialchars($voter['name']); ?></strong></td>
                                                 <td>
                                                     <?php 
                                                     if (!empty($voter['email'])) {
-                                                        echo '<i class="fas fa-envelope me-1"></i>' . $voter['email'];
-                                                    } elseif (!empty($voter['phone'])) {
-                                                        echo '<i class="fas fa-phone me-1"></i>' . $voter['phone'];
+                                                        echo '<i class="fas fa-envelope text-primary me-1"></i>' . htmlspecialchars($voter['email']);
                                                     } else {
                                                         echo '<span class="text-muted">-</span>';
                                                     }
                                                     ?>
                                                 </td>
                                                 <td>
-                                                    <?php $vid = (string)($voter['id'] ?? ''); $vt = $voteMap[$vid] ?? null; ?>
-                                                    <?php if ($vt): ?>
-                                                        <span class="badge bg-success">✓ Voted</span>
+                                                    <?php 
+                                                    if (!empty($voter['phone'])) {
+                                                        echo '<i class="fas fa-phone text-success me-1"></i>' . htmlspecialchars($voter['phone']);
+                                                    } else {
+                                                        echo '<span class="text-muted">-</span>';
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <td>
+                                                    <?php if ($voter['vote_time']): ?>
+                                                        <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i>Voted</span>
                                                     <?php else: ?>
-                                                        <span class="badge bg-warning">Pending</span>
+                                                        <span class="badge bg-warning"><i class="fas fa-clock me-1"></i>Pending</span>
                                                     <?php endif; ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo isset($vt) ? format_date($vt) : '-'; ?>
+                                                    <?php 
+                                                    if ($voter['vote_time']) {
+                                                        echo date('M j, Y g:i A', strtotime($voter['vote_time']));
+                                                    } else {
+                                                        echo '<span class="text-muted">-</span>';
+                                                    }
+                                                    ?>
                                                 </td>
                                             </tr>
-                                        <?php endforeach; ?>
+                                        <?php endwhile; ?>
                                     </tbody>
                                 </table>
                             </div>
