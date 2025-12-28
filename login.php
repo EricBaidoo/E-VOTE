@@ -62,32 +62,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $error = 'Invalid admin credentials. Use Admin Name and PIN.';
     } else {
         // Voter login: Name + (Email OR Phone)
-        $cleanContact = trim(preg_replace('/\s+/', '', strtolower($contact)));
+        // AGGRESSIVE cleaning of user input - remove ALL whitespace, newlines, tabs, invisible chars
+        $cleanContact = trim($contact);
+        $cleanContact = preg_replace('/[\s\n\r\t]+/', '', $cleanContact); // Remove all whitespace
+        $cleanContact = preg_replace('/[\x00-\x1F\x7F]/u', '', $cleanContact); // Remove control chars
+        $cleanContact = strtolower($cleanContact); // Case-insensitive
         
-        // Build SQL to match name and (email OR phone)
-        $stmt = $conn->prepare("SELECT id, name, email, phone FROM voters WHERE LOWER(name) = LOWER(?)");
-        $stmt->bind_param("s", $name);
+        // Build SQL to match name - use fuzzy matching to handle spacing differences
+        // First try exact match, then try with normalized spacing
+        $stmt = $conn->prepare("SELECT id, name, email, phone FROM voters WHERE LOWER(name) = LOWER(?) OR LOWER(REPLACE(name, '  ', ' ')) = LOWER(REPLACE(?, '  ', ' '))");
+        $stmt->bind_param("ss", $name, $name);
         $stmt->execute();
         $result = $stmt->get_result();
         
         $foundVoter = null;
         while ($voter = $result->fetch_assoc()) {
-            // Check email match (case-insensitive, no spaces)
+            // Normalize both entered name and database name for comparison
+            $enteredName = strtolower(preg_replace('/\s+/', ' ', trim($name)));
+            $dbName = strtolower(preg_replace('/\s+/', ' ', trim($voter['name'])));
+            
+            // Only check email/phone if names match (after normalization)
+            if ($enteredName !== $dbName) {
+                continue; // Skip if names don't match
+            }
+            
+            // Check email match (case-insensitive, aggressively cleaned)
             $voterEmail = trim($voter['email'] ?? '');
             if (!empty($voterEmail)) {
-                $cleanEmail = strtolower(preg_replace('/\s+/', '', $voterEmail));
-                if ($cleanContact === $cleanEmail) {
+                // Clean database email same way as user input
+                $dbEmail = preg_replace('/[\s\n\r\t]+/', '', $voterEmail);
+                $dbEmail = preg_replace('/[\x00-\x1F\x7F]/u', '', $dbEmail);
+                $dbEmail = strtolower($dbEmail);
+                
+                if ($cleanContact === $dbEmail) {
                     $foundVoter = $voter;
                     break;
                 }
             }
             
-            // Check phone match (exact match after removing spaces)
+            // Check phone match (exact match after aggressive cleaning)
             $voterPhone = trim($voter['phone'] ?? '');
             if (!empty($voterPhone)) {
-                $cleanPhone = preg_replace('/\s+/', '', $voterPhone);
-                $inputPhone = preg_replace('/\s+/', '', $contact);
-                if ($inputPhone === $cleanPhone) {
+                // Clean both database and input phone numbers
+                $dbPhone = preg_replace('/[\s\n\r\t]+/', '', $voterPhone);
+                $dbPhone = preg_replace('/[\x00-\x1F\x7F]/u', '', $dbPhone);
+                $inputPhone = preg_replace('/[\s\n\r\t]+/', '', $contact);
+                $inputPhone = preg_replace('/[\x00-\x1F\x7F]/u', '', $inputPhone);
+                
+                if ($inputPhone === $dbPhone) {
                     $foundVoter = $voter;
                     break;
                 }
