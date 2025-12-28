@@ -12,7 +12,7 @@ ini_set('error_log', $logDir . '/php_errors.log');
 
 require_once 'includes/config.php';
 require_once 'includes/functions.php';
-require_once 'includes/json_utils.php';
+require_once 'includes/db_connect.php'; // Changed from json_utils.php to db_connect.php
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -34,25 +34,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $role = sanitize($_POST['role'] ?? 'voter');
     $name = sanitize($_POST['name'] ?? '');
     $pin = $_POST['pin'] ?? '';
-
-    $admins = json_load('admins.json');
-    $voters = json_load('voters.json');
+    $contact = sanitize($_POST['contact'] ?? ''); // Email or Phone
 
     if ($role === 'admin') {
-        $adminMatch = null;
-        foreach ($admins as $a) {
-            if (strcasecmp($name, $a['name'] ?? '') === 0 || strcasecmp($name, ADMIN_DEFAULT_USERNAME) === 0) {
-                $adminMatch = $a;
-                break;
-            }
-        }
-        if (!$adminMatch && strcasecmp($name, ADMIN_DEFAULT_USERNAME) === 0) {
-            $adminMatch = ['id' => 1, 'name' => ADMIN_DEFAULT_USERNAME, 'pin' => ADMIN_DEFAULT_PASSWORD];
+        // Admin login from database
+        $stmt = $conn->prepare("SELECT id, name, pin FROM admins WHERE name = ?");
+        $stmt->bind_param("s", $name);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $admin = $result->fetch_assoc();
+        $stmt->close();
+
+        // Fallback to default admin if not found
+        if (!$admin && strcasecmp($name, ADMIN_DEFAULT_USERNAME) === 0) {
+            $admin = ['id' => 1, 'name' => ADMIN_DEFAULT_USERNAME, 'pin' => ADMIN_DEFAULT_PASSWORD];
         }
 
-        if ($adminMatch && ($pin === ($adminMatch['pin'] ?? '') || $pin === ADMIN_DEFAULT_PASSWORD)) {
-            $_SESSION['user_id'] = 'admin_' . ($adminMatch['id'] ?? 1);
-            $_SESSION['username'] = $adminMatch['name'] ?? ADMIN_DEFAULT_USERNAME;
+        if ($admin && ($pin === $admin['pin'] || $pin === ADMIN_DEFAULT_PASSWORD)) {
+            $_SESSION['user_id'] = 'admin_' . $admin['id'];
+            $_SESSION['username'] = $admin['name'];
             $_SESSION['role'] = 'admin';
             $base = rtrim(SITE_URL, '/');
             $target = $base ? $base . '/admin/dashboard.php' : 'admin/dashboard.php';
@@ -61,24 +61,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $error = 'Invalid admin credentials. Use Admin Name and PIN.';
     } else {
+        // Voter login: Name + (Email OR Phone)
+        $cleanContact = trim(preg_replace('/\s+/', '', strtolower($contact)));
+        
+        // Build SQL to match name and (email OR phone)
+        $stmt = $conn->prepare("SELECT id, name, email, phone FROM voters WHERE LOWER(name) = LOWER(?)");
+        $stmt->bind_param("s", $name);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
         $foundVoter = null;
-        foreach ($voters as $v) {
-            $matchName = strcasecmp($name, $v['name'] ?? '') === 0;
-            if ($matchName && ($pin === ($v['pin'] ?? ''))) {
-                $foundVoter = $v;
-                break;
+        while ($voter = $result->fetch_assoc()) {
+            // Check email match (case-insensitive, no spaces)
+            $voterEmail = trim($voter['email'] ?? '');
+            if (!empty($voterEmail)) {
+                $cleanEmail = strtolower(preg_replace('/\s+/', '', $voterEmail));
+                if ($cleanContact === $cleanEmail) {
+                    $foundVoter = $voter;
+                    break;
+                }
+            }
+            
+            // Check phone match (exact match after removing spaces)
+            $voterPhone = trim($voter['phone'] ?? '');
+            if (!empty($voterPhone)) {
+                $cleanPhone = preg_replace('/\s+/', '', $voterPhone);
+                $inputPhone = preg_replace('/\s+/', '', $contact);
+                if ($inputPhone === $cleanPhone) {
+                    $foundVoter = $voter;
+                    break;
+                }
             }
         }
+        $stmt->close();
+        
         if ($foundVoter) {
             $_SESSION['user_id'] = (string)$foundVoter['id'];
-            $_SESSION['username'] = $foundVoter['name'] ?? 'Voter';
+            $_SESSION['username'] = $foundVoter['name'];
             $_SESSION['role'] = 'voter';
             $base = rtrim(SITE_URL, '/');
             $target = $base ? $base . '/voter/vote.php' : 'voter/vote.php';
             header('Location: ' . $target);
             exit;
         }
-        $error = 'Invalid voter credentials. Use your Name and PIN.';
+        $error = 'Invalid voter credentials. Check your Name and Email/Phone.';
     }
 }
 ?>
@@ -393,9 +419,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required autofocus>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="voter-contact-group">
+                    <label for="contact" class="form-label">Email or Phone Number</label>
+                    <input type="text" class="form-control" id="contact" name="contact" placeholder="Enter your email or phone number" required>
+                </div>
+
+                <div class="form-group" id="admin-pin-group" style="display: none;">
                     <label for="pin" class="form-label">Security PIN</label>
-                    <input type="password" class="form-control" id="pin" name="pin" placeholder="Enter your PIN" required>
+                    <input type="password" class="form-control" id="pin" name="pin" placeholder="Enter your PIN">
                 </div>
 
                 <button type="submit" class="btn-signin">
@@ -410,5 +441,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle between voter contact and admin PIN fields
+        const voterRadio = document.getElementById('voter');
+        const adminRadio = document.getElementById('admin');
+        const voterContactGroup = document.getElementById('voter-contact-group');
+        const adminPinGroup = document.getElementById('admin-pin-group');
+        const contactInput = document.getElementById('contact');
+        const pinInput = document.getElementById('pin');
+        
+        function toggleFields() {
+            if (adminRadio.checked) {
+                voterContactGroup.style.display = 'none';
+                adminPinGroup.style.display = 'block';
+                contactInput.required = false;
+                pinInput.required = true;
+            } else {
+                voterContactGroup.style.display = 'block';
+                adminPinGroup.style.display = 'none';
+                contactInput.required = true;
+                pinInput.required = false;
+            }
+        }
+        
+        voterRadio.addEventListener('change', toggleFields);
+        adminRadio.addEventListener('change', toggleFields);
+        
+        // Initialize on page load
+        toggleFields();
+    </script>
 </body>
 </html>

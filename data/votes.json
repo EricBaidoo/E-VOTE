@@ -1,0 +1,56 @@
+[
+    {
+        "voter_session_id": "1006",
+        "timestamp": "2025-12-28T01:38:47+00:00",
+        "choices": {
+            "President": [
+                "2006"
+            ],
+            "Vice President": [
+                "2016"
+            ],
+            "Secretary": [
+                "2013"
+            ],
+            "Treasurer": [
+                "2005"
+            ],
+            "Organizer": [
+                "2004"
+            ],
+            "Male Executive Member": [
+                "2007"
+            ],
+            "Female Executive Member": [
+                "2012"
+            ]
+        }
+    },
+    {
+        "voter_session_id": "48",
+        "timestamp": "2025-12-28T03:06:53+00:00",
+        "choices": {
+            "President": [
+                "2006"
+            ],
+            "Vice President": [
+                "2010"
+            ],
+            "Secretary": [
+                "2009"
+            ],
+            "Treasurer": [
+                "2005"
+            ],
+            "Organizer": [
+                "2004"
+            ],
+            "Male Executive Member": [
+                "2007"
+            ],
+            "Female Executive Member": [
+                "2012"
+            ]
+        }
+    }
+]

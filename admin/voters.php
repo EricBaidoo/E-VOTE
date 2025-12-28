@@ -152,6 +152,7 @@ $pending_count = max(0, $total_voters - $voted_count);
                                         <tr>
                                             <th>Name</th>
                                             <th>Voter ID</th>
+                                            <th>Contact</th>
                                             <th>Status</th>
                                             <th>Vote Time</th>
                                         </tr>
@@ -161,6 +162,17 @@ $pending_count = max(0, $total_voters - $voted_count);
                                             <tr>
                                                 <td><strong><?php echo $voter['name'] ?? 'Voter'; ?></strong></td>
                                                 <td><code><?php echo $voter['id'] ?? 'N/A'; ?></code></td>
+                                                <td>
+                                                    <?php 
+                                                    if (!empty($voter['email'])) {
+                                                        echo '<i class="fas fa-envelope me-1"></i>' . $voter['email'];
+                                                    } elseif (!empty($voter['phone'])) {
+                                                        echo '<i class="fas fa-phone me-1"></i>' . $voter['phone'];
+                                                    } else {
+                                                        echo '<span class="text-muted">-</span>';
+                                                    }
+                                                    ?>
+                                                </td>
                                                 <td>
                                                     <?php $vid = (string)($voter['id'] ?? ''); $vt = $voteMap[$vid] ?? null; ?>
                                                     <?php if ($vt): ?>

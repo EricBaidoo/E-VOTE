@@ -94,6 +94,18 @@ foreach ($votes as $vt) {
                                     <th class="text-muted">Voter ID:</th>
                                     <td><code class="fs-6"><?php echo $voter['id'] ?? '-'; ?></code></td>
                                 </tr>
+                                <?php if (!empty($voter['email'])): ?>
+                                <tr>
+                                    <th class="text-muted">Email:</th>
+                                    <td><?php echo $voter['email']; ?></td>
+                                </tr>
+                                <?php endif; ?>
+                                <?php if (!empty($voter['phone'])): ?>
+                                <tr>
+                                    <th class="text-muted">Phone:</th>
+                                    <td><?php echo $voter['phone']; ?></td>
+                                </tr>
+                                <?php endif; ?>
                                 <tr>
                                     <th class="text-muted">Voting Status:</th>
                                     <td>
