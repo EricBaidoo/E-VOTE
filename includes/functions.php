@@ -73,13 +73,18 @@ function get_voter_info($voter_id) {
 
 // Check if voter has voted
 function has_voted($voter_id) {
-    $votes = json_load('votes.json');
-    foreach ($votes as $v) {
-        if (($v['voter_session_id'] ?? null) === (string)$voter_id) {
-            return true;
-        }
+    global $conn;
+    if (!isset($conn)) {
+        require_once __DIR__ . '/db_connect.php';
     }
-    return false;
+    $stmt = $conn->prepare("SELECT COUNT(*) as count FROM votes WHERE voter_session_id = ?");
+    $voter_id_str = (string)$voter_id;
+    $stmt->bind_param("s", $voter_id_str);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $count = $result->fetch_assoc()['count'];
+    $stmt->close();
+    return $count > 0;
 }
 
 // Get all positions
@@ -132,8 +137,26 @@ function get_election_results() {
 
 // Cast vote
 function cast_vote($voter_id, $votes_array) {
-    // JSON-backed voting; expects $votes_array as [position_name => [candidate_id, ...]]
-    return record_vote_json((string)$voter_id, $votes_array);
+    // MySQL-backed voting; expects $votes_array as [position_name => [candidate_id, ...]]
+    global $conn;
+    if (!isset($conn)) {
+        require_once __DIR__ . '/db_connect.php';
+    }
+    
+    $voter_id_str = (string)$voter_id;
+    $stmt = $conn->prepare("INSERT INTO votes (voter_session_id, position, candidate_id) VALUES (?, ?, ?)");
+    
+    foreach ($votes_array as $position => $candidate_ids) {
+        if (!is_array($candidate_ids)) {
+            $candidate_ids = [$candidate_ids];
+        }
+        foreach ($candidate_ids as $cid) {
+            $stmt->bind_param("ssi", $voter_id_str, $position, $cid);
+            $stmt->execute();
+        }
+    }
+    $stmt->close();
+    return true;
 }
 
 // Format date
@@ -143,25 +166,22 @@ function format_date($date) {
 
 // Get total votes cast
 function get_total_votes_cast() {
-    if (!function_exists('json_load')) {
-        require_once __DIR__ . '/json_utils.php';
+    global $conn;
+    if (!isset($conn)) {
+        require_once __DIR__ . '/db_connect.php';
     }
-    $votes = json_load('votes.json');
-    $unique = [];
-    foreach ($votes as $v) {
-        $uid = $v['voter_session_id'] ?? null;
-        if ($uid) { $unique[$uid] = true; }
-    }
-    return count($unique);
+    $result = $conn->query("SELECT COUNT(DISTINCT voter_session_id) as total FROM votes");
+    return $result->fetch_assoc()['total'];
 }
 
 // Get total registered voters
 function get_total_registered_voters() {
-    if (!function_exists('json_load')) {
-        require_once __DIR__ . '/json_utils.php';
+    global $conn;
+    if (!isset($conn)) {
+        require_once __DIR__ . '/db_connect.php';
     }
-    $voters = json_load('voters.json');
-    return is_array($voters) ? count($voters) : 0;
+    $result = $conn->query("SELECT COUNT(*) as total FROM voters");
+    return $result->fetch_assoc()['total'];
 }
 
 // Send response as JSON

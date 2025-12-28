@@ -2,6 +2,7 @@
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/json_utils.php';
+require_once '../includes/db_connect.php';
 
 require_login('voter');
 
@@ -10,17 +11,16 @@ $session_voter_id = isset($_SESSION['user_id']) ? (string)$_SESSION['user_id'] :
 // Basic display name fallback
 $display_name = isset($_SESSION['username']) ? $_SESSION['username'] : 'Voter';
 
-// JSON-based: check if already voted
-$already_voted = has_voted_json($session_voter_id);
+// MySQL-based: check if already voted
+$already_voted = has_voted($session_voter_id);
 if ($already_voted) {
     $error = "You have already cast your vote!";
 }
 
-// Load positions and candidates from JSON
+// Load positions and candidates from JSON (aspirants stay in JSON)
 $positions_config = get_positions_config();
 $aspirants_by_pos = group_aspirants_by_position();
 $positions = array_keys($aspirants_by_pos);
-// Don't sort - group_aspirants_by_position already returns sorted positions
 
 // Handle vote submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$already_voted) {
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !$already_voted) {
         $normalized[$pos] = $selected;
     }
     if (empty($errors)) {
-        if (record_vote_json($session_voter_id, $normalized)) {
+        if (cast_vote($session_voter_id, $normalized)) {
             header('Location: vote_success.php');
             exit;
         } else {

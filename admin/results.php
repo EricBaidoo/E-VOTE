@@ -2,13 +2,30 @@
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
 require_once '../includes/json_utils.php';
+require_once '../includes/db_connect.php';
 
 require_login('admin');
 
 $admin = isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin';
 
-// Build results from JSON
-$tally = tally_results();
+// Get vote counts from MySQL
+$query = "SELECT position, candidate_id, COUNT(*) as votes FROM votes GROUP BY position, candidate_id";
+$result = $conn->query($query);
+
+// Build tally array
+$tally = [];
+while ($row = $result->fetch_assoc()) {
+    $position = $row['position'];
+    $candidate_id = $row['candidate_id'];
+    $votes = $row['votes'];
+    
+    if (!isset($tally[$position])) {
+        $tally[$position] = [];
+    }
+    $tally[$position][$candidate_id] = $votes;
+}
+
+// Get candidates from JSON (aspirants stay in JSON)
 $asp_by_pos = group_aspirants_by_position();
 ?>
 <!DOCTYPE html>

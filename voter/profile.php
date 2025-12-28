@@ -1,27 +1,30 @@
 <?php
 require_once '../includes/config.php';
 require_once '../includes/functions.php';
-require_once '../includes/json_utils.php';
+require_once '../includes/db_connect.php';
 
 require_login('voter');
 
 $voter_id = (string)$_SESSION['user_id'];
-$voters = json_load('voters.json');
-$votes = json_load('votes.json');
 
-// Find voter record by id
-$voter = null;
-foreach ($voters as $v) { if ((string)($v['id'] ?? '') === $voter_id) { $voter = $v; break; } }
+// Get voter record from MySQL
+$stmt = $conn->prepare("SELECT id, name, email, phone FROM voters WHERE id = ?");
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$result = $stmt->get_result();
+$voter = $result->fetch_assoc();
+$stmt->close();
 
-// Voting status and time
-$has_voted_flag = false; $vote_time = null;
-foreach ($votes as $vt) {
-    if (($vt['voter_session_id'] ?? null) === $voter_id) {
-        $has_voted_flag = true;
-        $ts = $vt['timestamp'] ?? null;
-        if ($ts && (!$vote_time || strtotime($ts) > strtotime($vote_time))) { $vote_time = $ts; }
-    }
-}
+// Get voting status and time from MySQL
+$stmt = $conn->prepare("SELECT MAX(timestamp) as vote_time FROM votes WHERE voter_session_id = ?");
+$stmt->bind_param("s", $voter_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$vote_data = $result->fetch_assoc();
+$stmt->close();
+
+$has_voted_flag = !empty($vote_data['vote_time']);
+$vote_time = $vote_data['vote_time'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
